@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:tasky/core/server_service/http_service.dart';
+import 'package:tasky/core/server_service/server_service.dart';
 import 'package:tasky/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:tasky/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:tasky/features/auth/data/repositories/auth_repository_impl.dart';
@@ -31,10 +32,10 @@ class AuthEnjection {
         () => AuthRepositoryImpl(authRemoteDataSource: ls()));
 
     ls.registerLazySingleton<AuthRemoteDataSource>(
-        () => AuthRemoteDataSourceImpl(httpService: ls()));
+        () => AuthRemoteDataSourceImpl(serverService: ls()));
     ls.registerLazySingleton<AuthLocalDataSource>(
         () => AuthLocalDataSourceImpl(secureStorage: ls()));
     ls.registerLazySingleton(() => const FlutterSecureStorage());
-    ls.registerLazySingleton(() => HttpService());
+    ls.registerLazySingleton<ServerService>(() => HttpService());
   }
 }
